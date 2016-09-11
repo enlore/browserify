@@ -8,8 +8,11 @@
   "scripts": {
     "watchify": "watchify -vd -p browserify-hmr -e src/main.js -o dist/build.js",
     "serve": "http-server -c 1 -a localhost",
-    "dev": "npm-run-all --parallel watchify serve",
-    "build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > dist/build.js",
+    "pug-w": "pug --watch --pretty -o . src/index.pug",
+    "dev": "npm-run-all --parallel watchify pug-w serve",
+    "pug-b": "pug -o . src/index.pug",
+    "do-build": "cross-env NODE_ENV=production browserify -g envify -p [ vueify/plugins/extract-css -o dist/build.css ] -e src/main.js | uglifyjs -c warnings=false -m > dist/build.js",
+    "build": "npm-run-all do-build pug-b",
     "lint": "eslint --ext .js,.vue src test/unit",
     "test": "karma start karma.conf.js"
   },
@@ -20,7 +23,9 @@
     ]
   },
   "dependencies": {
-    "vue": "^2.0.0-rc.1"
+    "vue": "^2.0.0-rc.1",
+    "vue-router": "^2.0.0-rc.4",
+    "vuex": "^2.0.0-rc.5"
   },
   "devDependencies": {
     "babel-core": "^6.0.0",
